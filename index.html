@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <title>Система управління аеропортом</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <h1>Система управління аеропортом</h1>
+  <ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#routes">Маршрути</a></li>
+    <li><a data-toggle="tab" href="#planes">Літаки</a></li>
+    <li><a data-toggle="tab" href="#flights">Рейси</a></li>
+  </ul>
+  <div class="tab-content">
+    <div id="routes" class="tab-pane fade in active">
+      <h3>Маршрути</h3>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Пункт вильоту</th>
+            <th>Пункт призначення</th>
+            <th>Відстань</th>
+            <th>Тривалість</th>
+            <th>Дії</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <button class="btn btn-success" id="addRoutes">Додати</button>
+    </div>
+    <div id="planes" class="tab-pane fade">
+      <h3>Літаки</h3>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Номер</th>
+            <th>Марка</th>
+            <th>Кількість місць</th>
+            <th>Швидкість</th>
+            <th>Максимальна дальність</th>
+            <th>Дії</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <button class="btn btn-success" id="addPlanes">Додати</button>
+    </div>
+    <div id="flights" class="tab-pane fade">
+      <h3>Рейси</h3>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Літак</th>
+            <th>Дата, час вильоту</th>
+            <th>Дата, час прибуття</th>
+            <th>Кількість проданих квитків</th>
+            <th>Дії</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <button class="btn btn-success" id="addFlights">Додати</button>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="routeModal" tabindex="-1" role="dialog" aria-labelledby="routeModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="routeModalLongTitle">Додати/Редагувати маршрут</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <form id="routeForm">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="routeDepartureInput" class="form-label">Пункт вильоту</label>
+            <input type="text" class="form-control" id="routeDepartureInput" required>
+          </div>
+          <div class="mb-3">
+            <label for="routeArrivalInput" class="form-label">Пункт призначення</label>
+            <input type="text" class="form-control" id="routeArrivalInput" required>
+          </div>
+          <div class="mb-3">
+            <label for="routeDistanceInput" class="form-label">Відстань</label>
+            <input type="text" class="form-control" id="routeDistanceInput" required>
+          </div>
+          <div class="mb-3">
+            <label for="routeDurationInput" class="form-label">Тривалість</label>
+            <input type="text" class="form-control" id="routeDurationInput" required>
+          </div>
+          <input type="hidden" id="routeIdInput" value=""/>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="closeRouteModal" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+          <button type="submit" class="btn btn-primary">Зберегти</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="planeModal" tabindex="-1" role="dialog" aria-labelledby="planeModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="planeModalLongTitle">Додати/Редагувати літак</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <form id="planeForm">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="planeNumberInput" class="form-label">Номер</label>
+            <input type="text" class="form-control" id="planeNumberInput" required>
+          </div>
+          <div class="mb-3">
+            <label for="planeBrandInput" class="form-label">Марка</label>
+            <input type="text" class="form-control" id="planeBrandInput" required>
+          </div>
+          <div class="mb-3">
+            <label for="planeSeatsInput" class="form-label">Кількість місць</label>
+            <input type="number" class="form-control" id="planeSeatsInput" required>
+          </div>
+          <div class="mb-3">
+            <label for="planeSpeedInput" class="form-label">Швидкість</label>
+            <input type="text" class="form-control" id="planeSpeedInput" required>
+          </div>
+          <div class="mb-3">
+            <label for="planeRangeInput" class="form-label">Максимальна дальність</label>
+            <input type="text" class="form-control" id="planeRangeInput" required>
+          </div>
+          <input type="hidden" id="planeIdInput" value=""/>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="closePlaneModal" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+          <button type="submit" class="btn btn-primary">Зберегти</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="flightModal" tabindex="-1" role="dialog" aria-labelledby="flightModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="flightModalLongTitle">Додати/Редагувати рейс</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <form id="flightForm">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="flightPlaneInput" class="form-label">Літак</label>
+            <select id="flightPlaneInput" class="form-select form-control form-select-lg mb-3" aria-label=".form-select-lg" required></select>
+          </div>
+          <div class="mb-3">
+            <label for="flightDepartureInput" class="form-label">Дата, час вильоту</label>
+            <input type="datetime-local" class="form-control" id="flightDepartureInput" required>
+          </div>
+          <div class="mb-3">
+            <label for="flightArrivalInput" class="form-label">Дата, час прибуття</label>
+            <input type="datetime-local" class="form-control" id="flightArrivalInput" required>
+          </div>
+          <div class="mb-3">
+            <label for="flightTicketsInput" class="form-label">Кількість проданих квитків</label>
+            <input type="number" class="form-control" id="flightTicketsInput" required>
+          </div>
+          <input type="hidden" id="flightIdInput" value=""/>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="closeFlightModal" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+          <button type="submit" class="btn btn-primary">Зберегти</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script src="main.js"></script>
+</body>
+</html>
