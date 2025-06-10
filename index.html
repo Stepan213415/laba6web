@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <title>Система управління аеропортом</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Система управління аеропортом</h1>
+      <ul class="nav nav-tabs">
+        <li class="active">
+          <a data-toggle="tab" href="#routes">Маршрути</a>
+        </li>
+        <li><a data-toggle="tab" href="#planes">Літаки</a></li>
+        <li><a data-toggle="tab" href="#flights">Рейси</a></li>
+      </ul>
+
+      <div class="tab-content">
+        <div id="routes" class="tab-pane fade in active">
+          <button
+            class="btn btn-success pull-right"
+            onclick="showAddModal('route')"
+          >
+            Додати
+          </button>
+          <h3>Маршрути</h3>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Пункт вильоту</th>
+                <th>Пункт призначення</th>
+                <th>Відстань</th>
+                <th>Тривалість</th>
+                <th>Дії</th>
+              </tr>
+            </thead>
+            <tbody id="routesTable"></tbody>
+          </table>
+        </div>
+
+        <div id="planes" class="tab-pane fade">
+          <button
+            class="btn btn-success pull-right"
+            onclick="showAddModal('plane')"
+          >
+            Додати
+          </button>
+          <h3>Літаки</h3>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Номер</th>
+                <th>Марка</th>
+                <th>Кількість місць</th>
+                <th>Швидкість</th>
+                <th>Максимальна дальність</th>
+                <th>Дії</th>
+              </tr>
+            </thead>
+            <tbody id="planesTable"></tbody>
+          </table>
+        </div>
+
+        <div id="flights" class="tab-pane fade">
+          <button
+            class="btn btn-success pull-right"
+            onclick="showAddModal('flight')"
+          >
+            Додати
+          </button>
+          <h3>Рейси</h3>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Літак</th>
+                <th>Дата, час вильоту</th>
+                <th>Дата, час прибуття</th>
+                <th>Кількість проданих квитків</th>
+                <th>Дії</th>
+              </tr>
+            </thead>
+            <tbody id="flightsTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="routeModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Маршрут</h4>
+          </div>
+          <div class="modal-body">
+            <form id="routeForm">
+              <input type="hidden" name="id" />
+              <div class="form-group">
+                <label>Пункт вильоту</label>
+                <input type="text" class="form-control" name="from" required />
+              </div>
+              <div class="form-group">
+                <label>Пункт призначення</label>
+                <input type="text" class="form-control" name="to" required />
+              </div>
+              <div class="form-group">
+                <label>Відстань</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  name="distance"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label>Тривалість</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="duration"
+                  required
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+              Закрити
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="saveEntity('route')"
+            >
+              Зберегти
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="planeModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Літак</h4>
+          </div>
+          <div class="modal-body">
+            <form id="planeForm">
+              <input type="hidden" name="id" />
+              <div class="form-group">
+                <label>Номер</label>
+                <input type="text" class="form-control" name="number" required />
+              </div>
+              <div class="form-group">
+                <label>Марка</label>
+                <input type="text" class="form-control" name="brand" required />
+              </div>
+              <div class="form-group">
+                <label>Кількість місць</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  name="seats"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label>Швидкість</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  name="speed"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label>Максимальна дальність</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  name="range"
+                  required
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+              Закрити
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="saveEntity('plane')"
+            >
+              Зберегти
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="flightModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Рейс</h4>
+          </div>
+          <div class="modal-body">
+            <form id="flightForm">
+              <input type="hidden" name="id" />
+              <div class="form-group">
+                <label>Літак</label>
+                <select class="form-control" name="plane" required>
+                  <option value="">Виберіть літак</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Дата, час вильоту</label>
+                <input
+                  type="datetime-local"
+                  class="form-control"
+                  name="departure"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label>Дата, час прибуття</label>
+                <input
+                  type="datetime-local"
+                  class="form-control"
+                  name="arrival"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label>Кількість проданих квитків</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  name="tickets"
+                  required
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+              Закрити
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="saveEntity('flight')"
+            >
+              Зберегти
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="./main.js"></script>
+  </body>
+</html>
